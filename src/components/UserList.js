@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'reactstrap';
-//import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
+import MUIDataTable from "mui-datatables";
 import { getUsers } from '../redux/actions/userActions';
 import PropTypes from 'prop-types';
-import EditIcon from '@material-ui/icons/Edit';
+import UpdateUserModal from './UpdateUserModal';
+
 
 class UserList extends Component {
   static propTypes = {
@@ -15,32 +15,58 @@ class UserList extends Component {
   componentDidMount() {
     this.props.getUsers();
   }
-
+    
   render() {
     const { users } = this.props.user;
+    const columns = [
+      "id",
+      "name", 
+      "occupation", 
+      "email", 
+      "bio",
+      {
+        name: "Edit",
+        options: {
+          filter: false,
+          sort: true,
+          empty: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const rowId = tableMeta.rowData[0]
+            const name = tableMeta.rowData[1]
+            const occupation = tableMeta.rowData[2]
+            const email = tableMeta.rowData[3]
+            const bio = tableMeta.rowData[4]
+        
+            console.log(rowId, name)
+            return (
+              <UpdateUserModal
+                key={rowId} 
+                id={rowId}
+                name={name}
+                occupation={occupation}
+                email={email}
+                bio={bio}
+              />
+            );
+          }
+        }
+      }
+    ];
+    const options = {
+      filterType: "dropdown",
+      responsive: "scroll",
+      selectableRows: false
+    };
+
     return (
-      <Table>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Occupation</th>
-            <th>Email</th>
-            <th>Bio</th>
-          </tr>
-        </thead>
-        <tbody>
-        {users.map(user => (
-          <tr key={user.id}>
-            <td>{user.id}</td>
-            <td>{user.name}</td>
-            <td>{user.occupation}</td>
-            <td>{user.email}</td>
-            <td>{user.bio}</td>
-          </tr>
-        ))}
-        </tbody>
-    </Table>
+      <div style={{marginTop:80}}>
+        <MUIDataTable
+          title={"All Users"}
+          data={users}
+          columns={columns}
+          options={options}
+        />
+      </div>
     );
   }
 }
