@@ -1,4 +1,7 @@
-import { GET_USERS, USERS_LOADING } from '../actions/types';
+import { 
+    GET_USERS,
+    UPDATE_USER, 
+    USERS_LOADING } from '../actions/types';
   
 const initialState = {
     users: [],
@@ -12,6 +15,15 @@ export default function(state = initialState, action) {
             ...state,
             users: action.payload,
             loading: false
+        };
+        case UPDATE_USER:
+        return {
+            ...state,
+            users: state.users.map(user =>
+                user.id === action.payload.id
+                    ? (user = action.payload)
+                    : user
+                )
         };
         case USERS_LOADING:
         return {

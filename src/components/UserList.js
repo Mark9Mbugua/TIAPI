@@ -7,6 +7,16 @@ import UpdateUserModal from './UpdateUserModal';
 
 
 class UserList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: '',
+      name: '',
+      occupation: '',
+      email: '',
+      bio: '',
+    };
+  }
   static propTypes = {
     getUsers: PropTypes.func.isRequired,
     user : PropTypes.object.isRequired,
@@ -24,11 +34,13 @@ class UserList extends Component {
       "occupation", 
       "email", 
       "bio",
+      "created_at",
+      "updated_at",
       {
         name: "Edit",
         options: {
           filter: false,
-          sort: true,
+          sort: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             const rowId = tableMeta.rowData[0]
@@ -36,8 +48,9 @@ class UserList extends Component {
             const occupation = tableMeta.rowData[2]
             const email = tableMeta.rowData[3]
             const bio = tableMeta.rowData[4]
-        
+
             console.log(rowId, name)
+
             return (
               <UpdateUserModal
                 key={rowId} 
