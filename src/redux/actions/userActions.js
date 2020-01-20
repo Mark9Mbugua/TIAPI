@@ -7,6 +7,7 @@ import {
   USERS_LOADING
 } from './types';
 
+//get users action
 export const getUsers = () => (dispatch) => {
   dispatch(setUsersLoading());
   axios
@@ -22,6 +23,7 @@ export const getUsers = () => (dispatch) => {
     );
 };
 
+//update user action
 export const updateUser = (user, id) => (dispatch) => {
   axios
     .patch(`https://ti-react-test.herokuapp.com/users/${id}`, user)

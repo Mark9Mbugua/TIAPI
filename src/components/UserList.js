@@ -7,27 +7,21 @@ import UpdateUserModal from './UpdateUserModal';
 
 
 class UserList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: '',
-      name: '',
-      occupation: '',
-      email: '',
-      bio: '',
-    };
-  }
   static propTypes = {
     getUsers: PropTypes.func.isRequired,
     user : PropTypes.object.isRequired,
   };
 
   componentDidMount() {
+    // get all users from the props via the getUsers action
     this.props.getUsers();
   }
     
   render() {
+    // destructure users from the props we mapped from the state (redux) 
     const { users } = this.props.user;
+
+    // use of Material UI datatables to neatly display the API data
     const columns = [
       "id",
       "name", 
@@ -43,13 +37,13 @@ class UserList extends Component {
           sort: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
-            const rowId = tableMeta.rowData[0]
-            const name = tableMeta.rowData[1]
-            const occupation = tableMeta.rowData[2]
-            const email = tableMeta.rowData[3]
-            const bio = tableMeta.rowData[4]
-
-            console.log(rowId, name)
+            const cellData = tableMeta.rowData
+            
+            const rowId = cellData[0]
+            const name = cellData[1]
+            const occupation = cellData[2]
+            const email = cellData[3]
+            const bio = cellData[4]
 
             return (
               <UpdateUserModal
@@ -72,7 +66,7 @@ class UserList extends Component {
     };
 
     return (
-      <div style={{marginTop:80}}>
+      <div style={{marginTop:30}}>
         <MUIDataTable
           title={"All Users"}
           data={users}
