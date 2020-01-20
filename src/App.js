@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserList from './components/UserList';
+import Title from './components/Title';
 import { Container } from 'reactstrap';
 
 import { Provider } from 'react-redux';
@@ -15,6 +16,7 @@ class App extends Component {
       <Provider store={store}>
         <div className='App'>
           <Container>
+            <Title />
             <UserList />
           </Container>
         </div>
